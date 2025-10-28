@@ -3,7 +3,7 @@ const BASE_FOLDER_NAME = "SolicitudesComite";
 const DOMAIN_INTERNAL = "@uniboyaca.edu.co";
 const MAX_THREADS_PER_RUN = 80; // máximo hilos por ejecución
 const MAX_THREADS_WARNING = 70; // umbral para alerta por correo
-const EMAIL_ADMIN = "yeisond.molina@gmail.com"; // destinatario de notificación
+const EMAIL_ADMIN = "@gmail.com"; // destinatario de notificación
 // ----------------------------------------
 
 function procesarCorreos() {
