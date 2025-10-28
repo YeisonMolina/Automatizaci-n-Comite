@@ -1,4 +1,4 @@
-# AutomatizaciónProcesos — README
+# AutomatizaciónProcesos
 
 Resumen
 - Script en Google Apps Script para procesar hilos de Gmail (no leídos) y gestionar adjuntos en Google Drive, manteniendo seguimiento por hilo en una Google Sheet.
@@ -7,8 +7,6 @@ Resumen
 
 Archivos principales
 - procesarCorreos.js — Lógica principal de ingestión y persistencia.
-- onEditInstallable.js — Trigger instalable para mover archivos y actualizar etiquetas al cambiar Clasificación.
-- README.md — Documentación (este archivo).
 
 Requisitos y permisos
 - Cuenta Google con permisos para:
@@ -114,15 +112,7 @@ Fila actualizada con nuevo cuerpo y Fecha_Procesamiento, Estado="Actualización"
 No se crean archivos en Drive (no se guardan imágenes).
 Tipo_Adjunto y Nombre_Adjuntos sin cambios.
 
-- Caso 5 — Mensajes/adjuntos que exceden límite tamaño
-
-Precondición: Email con adjunto >10MB.
-Pasos: Ejecutar procesarCorreos().
-Esperado:
-Adjunto mayor a 10MB ignorado; no falla ejecución; se registra en LOGS si consideras reportarlo.
-Resto del flujo igual.
-
-- Caso 6 — Concurrencia / Procesos paralelos
+- Caso 5 — Concurrencia / Procesos paralelos
 
 Precondición: Ejecutar dos instancias del script casi simultáneamente.
 Pasos: Iniciar procesarCorreos() en ambas.
@@ -130,16 +120,7 @@ Esperado:
 LockService evita colisiones (una instancia aborta con log WARN).
 No se duplica incremental ni filas por los mismos hilos (etiqueta "Procesando" evita reprocesos).
 
-- Caso 7 — Etiqueta y movimiento por onEditInstallable
-
-Precondición: Fila existente con Ruta_Adjuntos y archivos en Drive; cambiar columna Clasificación a "Aprobado".
-Pasos: Activar onEdit (edición manual).
-Esperado:
-Hilo Gmail recibe etiqueta "Aprobado" y se remueve etiqueta anterior asociada a clasificación.
-Se crea/obtiene carpeta BASE_FOLDER_NAME/Aprobado/{ID}_{Solicitante} y se mueve (addFile+removeFile) archivos de la carpeta anterior.
-Columna Ruta_Adjuntos actualizada con la nueva URL.
-
-- Caso 8 — Texto muy largo en cuerpo
+- Caso 6 — Texto muy largo en cuerpo
 
 Precondición: Email con cuerpo > 49,000 caracteres.
 Pasos: Ejecutar procesarCorreos().
@@ -147,13 +128,14 @@ Esperado:
 Cuerpo truncado a ~49000 y se adiciona nota "... (texto truncado por límite de celda)".
 Script no falla al escribir en hoja.
 
-- Caso 9 — Dominio interno vs externo
+- Caso 7 — Dominio interno vs externo
 
 Precondición: Email desde remitente con dominio configurado DOMAIN_INTERNAL y otro externo.
 Pasos: Ejecutar procesarCorreos() para ambos.
 Esperado:
 Columna Interno/Externo correctamente "Interno" o "Externo".
-- Caso 10 — Error en Drive o Gmail (simular revocación de permisos)
+
+- Caso 8 — Error en Drive o Gmail (simular revocación de permisos)
 
 Precondición: Revocar permiso Drive o Gmail temporalmente (si es posible).
 Pasos: Ejecutar script.
